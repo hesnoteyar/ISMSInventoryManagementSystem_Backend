@@ -14,7 +14,7 @@ class BureauStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => 'required|string|max:10|unique:bureau,bureau_code',
+            'code' => 'required|string|max:20|unique:bureau,bureau_code',
             'description' => 'required|string|max:255|unique:bureau,bureau_name'
         ];
     }
@@ -23,7 +23,7 @@ class BureauStoreRequest extends FormRequest
     {
         return [
             'code.required' => 'Bureau code is required',
-            'code.max' => 'Bureau code must not exceed 10 characters',
+            'code.max' => 'Bureau code must not exceed 20 characters',
             'code.unique' => 'This bureau code already exists',
             'description.required' => 'Bureau name is required',
             'description.max' => 'Bureau name must not exceed 255 characters',
