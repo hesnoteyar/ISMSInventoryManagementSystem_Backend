@@ -9,9 +9,19 @@ use App\Models\Bureau;
 
 class BureauController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Bureau::all();
+        $per_page = $request->input('per_page', 10);
+        $search = $request->input('search');
+
+        $query = Bureau::query();
+
+        if ($search) {
+            $query->where('bureau_code', 'LIKE', "%$search%")
+                ->orWhere('bureau_name', 'LIKE', "%$search%");
+        }
+
+        return $query->paginate($per_page);
     }
 
     public function store(BureauStoreRequest $request)
@@ -24,13 +34,14 @@ class BureauController extends Controller
         ], 201);
     }
     
-    public function show(Bureau $bureau)
+    public function show($id)
     {
-        return $bureau;
+        return Bureau::findorFail($$id);
     }
 
-    public function update(BureauStoreRequest $request, Bureau $bureau)
+    public function update(BureauStoreRequest $request, Bureau $id)
     {
+        $bureau = Bureau::findorFail($id);
         $bureau->update($request->validated());
 
         return response()->json([
@@ -39,12 +50,21 @@ class BureauController extends Controller
         ]);
     }
 
-    public function destroy(Bureau $bureau)
+    public function destroy($id)
     {
+        $bureau = Bureau::findorFail($id);
         $bureau->delete();
 
         return response()->json([
             'message' => 'Bureau deleted successfully'
         ]);
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('q');
+        return Bureau::where('bureau_code', 'LIKE', "%$search%")
+            ->orWhere('bureau_name', 'LIKE', "%$search%")
+            ->get();    
     }
 }
