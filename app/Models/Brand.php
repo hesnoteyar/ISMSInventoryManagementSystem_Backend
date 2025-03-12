@@ -14,9 +14,10 @@ class Brand extends Model
     protected $primaryKey = 'brand_id';
     
     protected $fillable = [
-        'brand_id',
         'brand_name'
         ];
+
+        public $timestamps = false;
 
     /**
      * Get the equipment associated with the brand.

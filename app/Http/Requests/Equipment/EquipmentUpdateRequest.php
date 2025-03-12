@@ -4,7 +4,7 @@ namespace App\Http\Requests\Equipment;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class EquipmentStoreRequest extends FormRequest
+class EquipmentUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,6 +24,7 @@ class EquipmentStoreRequest extends FormRequest
         return [
             'Brand' => 'required|string|exists:brands,brand_id',
             'EquipmentType' => 'required|string|exists:equipmenttypes,equipment_type_id',
+
             'ModelNumber' => 'required|string',
             'Description' => 'required|string',
             'Quantity' => 'required|integer',

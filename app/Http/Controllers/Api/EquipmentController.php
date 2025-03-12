@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Equipment\EquipmentStoreRequest;
+use App\Http\Requests\Equipment\EquipmentUpdateRequest;
 use Illuminate\Http\Request;
 use App\Models\Equipment;
 use App\Http\Resources\EquipmentResource;
@@ -63,7 +64,17 @@ class EquipmentController extends Controller
      */
     public function store(EquipmentStoreRequest $request)
     {
-        return "Success";
+        $data = $request->validated();
+        $equipment = Equipment::create([
+            'brand_id' => $data['Brand'],
+            'equipment_type_id' => $data['EquipmentType'],
+            'equipment_model_number' => $data['ModelNumber'],
+            'equipment_description' => $data['Description'],
+            'equipment_qty' => $data['Quantity'],
+        ]);  
+
+
+        return new EquipmentResource($equipment);
     }
 
     /**
@@ -71,22 +82,35 @@ class EquipmentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return new EquipmentResource(Equipment::findOrFail($id));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(EquipmentUpdateRequest $request, Equipment $equipment)
     {
-        //
+        $data = $request->validated();
+        $equipment->update([
+            'brand_id' => $data['Brand'],
+            'equipment_type_id' => $data['EquipmentType'],
+            'equipment_model_number' => $data['ModelNumber'],
+            'equipment_description' => $data['Description'],
+            'equipment_qty' => $data['Quantity'],
+        ]);
+
+        return new EquipmentResource($equipment);
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Equipment $equipment)
     {
-        //
+        $equipment->delete();
+        return response()->json([
+            'message' => 'Equipment deleted successfully'
+        ]);
     }
 }

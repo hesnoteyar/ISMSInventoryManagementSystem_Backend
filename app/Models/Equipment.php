@@ -4,12 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Equipment extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = "equipments";
+    public $timestamps = false;
+
+    const CREATED_AT = 'equipment_created_at';
+    const UPDATED_AT = 'equipment_updated_at';
+    const DELETED_AT = 'equipment_deleted_at';
+
+    protected $primaryKey = 'equipment_id';
     
     protected $fillable = [
         "equipment_id",

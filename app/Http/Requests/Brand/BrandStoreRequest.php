@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Equipment;
+namespace App\Http\Requests\Brand;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class EquipmentStoreRequest extends FormRequest
+class BrandStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +22,16 @@ class EquipmentStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'Brand' => 'required|string|exists:brands,brand_id',
-            'EquipmentType' => 'required|string|exists:equipmenttypes,equipment_type_id',
-            'ModelNumber' => 'required|string',
-            'Description' => 'required|string',
-            'Quantity' => 'required|integer',
+            'brand_name' => 'required|string|max:255|unique:brands,brand_name'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'brand_name.required' => 'Brand name is required',
+            'brand_name.max' => 'Brand name must not exceed 255 characters',
+            'brand_name.unique' => 'This brand name already exists'
         ];
     }
 }
